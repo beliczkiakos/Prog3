@@ -1,0 +1,2 @@
+AkosTeszt;77;Beginner
+AkosTimer;7;Beginner
