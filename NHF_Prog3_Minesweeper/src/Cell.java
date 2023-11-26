@@ -10,6 +10,8 @@ public class Cell extends JButton implements Serializable {
     private boolean isMine;
     private boolean isFlag;
     private boolean isRevealed;
+    private boolean isHole;
+    private boolean isHeart;
     public void setSurroundingMines(Cell[][] cells) {
         for(int i = -1; i <= 1; i++) {
             for(int j = -1; j <= 1; j++) {
@@ -52,4 +54,8 @@ public class Cell extends JButton implements Serializable {
     public int getSurroundingMines() {return surroundingMines;}
     public void setRow(int r) {row = r;}
     public void setCol(int c) {col = c;}
+    public boolean getIsHole() {return isHole;}
+    public void setIsHole(boolean h) {isHole = h;}
+    public boolean getIsHeart() {return isHeart;}
+    public void setIsHeart(boolean h) {isHeart = h;}
 }

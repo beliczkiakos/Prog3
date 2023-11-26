@@ -14,11 +14,13 @@ public class Game extends JFrame implements ActionListener, Serializable {
     private int sizey;
     private int numberOfMines;
     private int numberOfFlags;
+    private int numberOfHoles;
     private int numberofRevealedCells;
     private String difficulty;
 
     private int counter = 0;
     private boolean lost = false;
+    private boolean extralife = false;
     private Timer timer = new Timer(1000, this);
     private JButton smile;
     private JButton save;
@@ -42,6 +44,8 @@ public class Game extends JFrame implements ActionListener, Serializable {
         setCells(gamepanel);
         placeMines();
         setAllSurroundingMines();
+        placeHoles();
+        placeHeart();
         setStatusBar(statusbarpanel);
         gbc.gridx = 0; gbc.gridy = 0;
         wholepanel.add(statusbarpanel, gbc);
@@ -65,10 +69,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(!cells[row][col].getIsFlag()) {
-                revealCell(row, col);
-            }
-            if(cells[row][col].getIsMine() && !cells[row][col].getIsFlag()) {
+            if(cells[row][col].getIsMine() && !cells[row][col].getIsFlag() && !extralife) {
                 lost = true;
                 ImageIcon sadsmileIcon = new ImageIcon("smile2_icon.jpg");
                 smile.setIcon(sadsmileIcon);
@@ -79,6 +80,9 @@ public class Game extends JFrame implements ActionListener, Serializable {
             if(numberofRevealedCells == sizex*sizey-numberOfMines && !lost) {
                 setEnabled(false);
                 new WinWindow(game);
+            }
+            if(!cells[row][col].getIsFlag()) {
+                revealCell(row, col);
             }
         }
     }
@@ -115,9 +119,19 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
         currentcell.setIsRevealed(true);
         numberofRevealedCells++;
+        if(currentcell.getIsHole()) {
+            currentcell.setBackground(new Color(95, 52, 9));
+            return;
+        }
+        if(currentcell.getIsHeart()) {
+            ImageIcon heartIcon = new ImageIcon("heart_icon.jpg");
+            currentcell.setIcon(heartIcon);
+            extralife = true;
+        }
         if(currentcell.getIsMine()) {
             ImageIcon bombIcon = new ImageIcon("bomb_icon.jpg");
             currentcell.setIcon(bombIcon);
+            extralife = false;
         } else {
             if(currentcell.getSurroundingMines() != 0) {
                 currentcell.setText(String.valueOf(currentcell.getSurroundingMines()));
@@ -172,19 +186,20 @@ public class Game extends JFrame implements ActionListener, Serializable {
                 sizex = 10;
                 sizey = 10;
                 numberOfMines = 20;
+                numberOfHoles = 3;
                 break;
             case "Advanced":
                 sizex = 17;
                 sizey = 17;
                 numberOfMines = 58;
+                numberOfHoles = 9;
                 break;
             case "Expert":
                 sizex = 24;
                 sizey = 24;
                 numberOfMines = 116;
+                numberOfHoles = 18;
                 break;
-            case "Load":
-
             default:
                 return;
         }
@@ -216,6 +231,35 @@ public class Game extends JFrame implements ActionListener, Serializable {
             if(!cells[s][o].getIsMine()) {
                 cells[s][o].setIsMine(true);
                 nom--;
+            }
+        }
+    }
+
+    public void placeHoles() {
+        Random sor = new Random();
+        Random oszlop = new Random();
+        int noh = numberOfHoles;
+        while(noh != 0) {
+            int s = sor.nextInt(sizex-1);
+            int o = oszlop.nextInt(sizey-1);
+            if(!cells[s][o].getIsMine() && cells[s][o].getSurroundingMines() == 0 && !cells[s][o].getIsHole()) {
+                cells[s][o].setIsHole(true);
+                noh--;
+            }
+        }
+    }
+
+    public void placeHeart() {
+        Random sor = new Random();
+        Random oszlop = new Random();
+        int noh = 1;
+        while(noh != 0) {
+            int s = sor.nextInt(sizex-1);
+            int o = oszlop.nextInt(sizey-1);
+            if(!cells[s][o].getIsMine() && cells[s][o].getSurroundingMines() == 0 && !cells[s][o].getIsHole()) {
+                cells[s][o].setIsHeart(true);
+                System.out.println(s + ";" + o);
+                noh--;
             }
         }
     }
