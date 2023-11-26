@@ -9,6 +9,10 @@ import java.io.IOException;
 public class MainMenu extends JFrame implements ActionListener {
     private final JButton startgame;
     private final JButton glorylist;
+
+    /**
+     * MainMenu konstruktora. Létrehozza és beállítja a framet és a rajta lévő komponenseket.
+     */
     public MainMenu() {
         setTitle("Main Menu");
         setPreferredSize(new Dimension(600, 400));
@@ -45,6 +49,10 @@ public class MainMenu extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Kezeli a különböző tevékenységeket az ablakon.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startgame) {

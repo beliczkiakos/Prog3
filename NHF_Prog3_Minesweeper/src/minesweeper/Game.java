@@ -35,6 +35,11 @@ public class Game extends JFrame implements ActionListener, Serializable {
     private final GameMainMenu gmm;
     private final Random sor = new Random();
     private final Random oszlop = new Random();
+
+    /**
+     * Game konstruktora. Létrehozza és beállítja a framet és a rajta lévő komponenseket.
+     * @param gmm
+     */
     public Game(GameMainMenu gmm) {
         super("Game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -69,11 +74,23 @@ public class Game extends JFrame implements ActionListener, Serializable {
         private final int row;
         private final int col;
         private final Game game;
+
+        /**
+         * CellClickListener konstruktora. Beállítja, hogy melyik cellára kattintott a felhasználó és az aktuális játékot.
+         * @param row
+         * @param col
+         * @param game
+         */
         public CellClickListener(int row, int col, Game game) {
             this.row = row;
             this.col = col;
             this.game = game;
         }
+
+        /**
+         * Kezeli a különböző tevékenységeket a játék ablakon.
+         * @param e the event to be processed
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if(cells[row][col].getIsMine() && !cells[row][col].getIsFlag() && !extralife) {
@@ -100,10 +117,20 @@ public class Game extends JFrame implements ActionListener, Serializable {
         private final int row;
         private final int col;
 
+        /**
+         * ButtonMouseListener konstruktora. Beállítja, hogy melyik cellára kattintott a felhasználó.
+         * @param row
+         * @param col
+         */
         ButtonMouseListener(int row, int col) {
             this.row = row;
             this.col = col;
         }
+
+        /**
+         * Kezeli a különböző egértevékenységeket a játék ablakon.
+         * @param e the event to be processed
+         */
         @Override
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
@@ -117,6 +144,14 @@ public class Game extends JFrame implements ActionListener, Serializable {
             }
         }
     }
+
+    /**
+     * Megkap egy sort és egy oszlopot. Ha az adott mező már fel van fedve vagy zászló van rajta, akkor rögtön visszatér.
+     * Ha viszont semelyik az előzőek közül, akkor felfedi a mezőt és beállítja az adott mezőre a tulajdonságokat.
+     * Például, ha a mező egy bomba melletti mező, akkor beállítja a számot rajta, ami megmutatja, hogy mennyi bomba van körülötte.
+     * @param row
+     * @param col
+     */
     public void revealCell(int row, int col) {
         Cell currentcell = cells[row][col];
         if(currentcell.getIsRevealed() || currentcell.getIsFlag()) {
@@ -157,6 +192,9 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Végigmegy az összes mezőn és felfedi őket.
+     */
     public void revealAllCell() {
         for(int i = 0; i < sizex; i++) {
             for(int j = 0; j < sizey; j++) {
@@ -165,6 +203,11 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Letesz egy zászlót az adott mezőre.
+     * @param row
+     * @param col
+     */
     public void toggleFlag(int row, int col) {
         Cell currentcell = cells[row][col];
         if(currentcell.getIsRevealed()) {
@@ -181,6 +224,10 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Beállítja a pálya méretét, bombaszámát és gödörszámát a paraméterül kapott GameMainMenu alapján.
+     * @param gmm
+     */
     public void setFieldSize(GameMainMenu gmm) {
         String selected = (String) gmm.dcb.getSelectedItem();
         difficulty = selected;
@@ -210,6 +257,10 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Beállítja egy cella tulajdonságait és hozzáadja a paraméterül kapott panelhez.
+     * @param gamepanel
+     */
     public void setCells(JPanel gamepanel) {
         for (int i = 0; i < sizex; i++) {
             for (int j = 0; j < sizey; j++) {
@@ -226,6 +277,9 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Elhelyezi a bombákat a pályán.
+     */
     public void placeMines() {
         int nom = numberOfMines;
         while(nom != 0) {
@@ -238,6 +292,9 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Elhelyezi a gödröket a pályán.
+     */
     public void placeHoles() {
         int noh = numberOfHoles;
         while(noh != 0) {
@@ -250,6 +307,9 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Elhelyezi az extra élet mezőt a pályán.
+     */
     public void placeHeart() {
         int noh = 1;
         while(noh != 0) {
@@ -262,6 +322,9 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Végigmegy az összes cellán és beállítja, hogy mennyi bomba van az adott mező körül.
+     */
     public void setAllSurroundingMines() {
         for(int i = 0; i < sizex; i++) {
             for(int j = 0; j < sizey; j++) {
@@ -270,6 +333,10 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Beállítja az állaptsor komponenseit és hozzáadja a paraméterül kapott panelhez.
+     * @param statusbarpanel
+     */
     public void setStatusBar(JPanel statusbarpanel) {
         JLabel flagtext = new JLabel("Rest flags:");
         nof = new JLabel("" + numberOfMines);
@@ -312,6 +379,10 @@ public class Game extends JFrame implements ActionListener, Serializable {
         statusbarpanel.add(rightpanel, gbc);
     }
 
+    /**
+     * Elmenti az aktuális játékot egy fájlba.
+     * @throws FileNotFoundException
+     */
     public void saveGame() throws FileNotFoundException {
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.txt"))) {
             oos.writeObject(this);
@@ -320,6 +391,9 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Betölti az utoljára elmentett játékot.
+     */
     public void loadGame() {
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("save.txt"))) {
             Game game = (Game) ois.readObject();
@@ -330,10 +404,28 @@ public class Game extends JFrame implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Visszaadja a játék Timer objektumát.
+     * @return
+     */
     public Timer getTimer() {return timer;}
+
+    /**
+     * Visszaadja a játék számlálóját.
+     * @return
+     */
     public int getCounter() {return counter;}
+
+    /**
+     * Visszaadja a nehézségi szintet.
+     * @return
+     */
     public String getDifficulty() {return difficulty;}
 
+    /**
+     * Kezeli a különböző tevékenységeket az ablakon.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == smile) {

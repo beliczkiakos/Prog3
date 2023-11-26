@@ -14,6 +14,11 @@ public class GloryList extends JFrame implements ActionListener {
     private final JPanel names = new JPanel();
     private final JPanel times = new JPanel();
     private final JPanel difficulties = new JPanel();
+
+    /**
+     * GloryList konstruktora. Létrehozza és beállítja a framet és a rajta lévő komponenseket.
+     * @throws IOException
+     */
     public GloryList() throws IOException {
         setTitle("Glorylist");
         setPreferredSize(new Dimension(600, 400));
@@ -60,6 +65,11 @@ public class GloryList extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Betölti fájlból a dicsőséglistát.
+     * @return
+     * @throws IOException
+     */
     public ArrayList<String[]> loadglorylist() throws IOException {
         ArrayList<String[]> list = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("glorylist.txt"))) {
@@ -74,6 +84,10 @@ public class GloryList extends JFrame implements ActionListener {
         return list;
     }
 
+    /**
+     * Kiírja az ablakra a dicsőséglistát megfelelően formázva.
+     * @param glorylist
+     */
     public void printglorylist(ArrayList<String[]> glorylist) {
         Collections.sort(glorylist, Comparator.comparing(array -> Integer.parseInt(array[1])));
         for(int i = 0; i < glorylist.size(); i++) {
@@ -93,6 +107,10 @@ public class GloryList extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Kezeli a különböző tevékenységeket az ablakon.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == back) {

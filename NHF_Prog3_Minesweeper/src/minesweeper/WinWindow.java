@@ -14,6 +14,11 @@ public class WinWindow extends JFrame implements ActionListener {
     private final JTextField field;
     private final int counter;
     private final String difficulty;
+
+    /**
+     * WinWindow konstruktora. Létrehozza és beállítja a framet és a rajta lévő komponenseket.
+     * @param game
+     */
     public WinWindow(Game game) {
         setTitle("Win");
         setPreferredSize(new Dimension(400,200));
@@ -50,6 +55,9 @@ public class WinWindow extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * A szövegmezőbe írt név, az idő és a nehézségi szint alapján beleteszi a játékost a dicsőséglistába.
+     */
     public void addToGloryList() {
         String filename = "glorylist.txt";
         String newLineglorylist = field.getText() + ";" + counter + ";" + difficulty;
@@ -65,6 +73,10 @@ public class WinWindow extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Kezeli a különböző tevékenységeket az ablakon.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         addToGloryList();

@@ -8,6 +8,11 @@ import java.awt.event.ActionListener;
 public class GameOverWindow extends JFrame implements ActionListener {
     private final JButton newgame;
     private final Game game;
+
+    /**
+     * GameOverWindow konstruktora. Létrehozza és beállítja a framet és a rajta lévő komponenseket.
+     * @param game
+     */
     public GameOverWindow(Game game) {
         setTitle("Game Over");
         setPreferredSize(new Dimension(400, 200));
@@ -36,6 +41,10 @@ public class GameOverWindow extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Kezeli a különböző tevékenységeket az ablakon.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == newgame) {

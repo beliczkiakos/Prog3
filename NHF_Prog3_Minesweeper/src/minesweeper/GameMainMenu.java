@@ -9,6 +9,10 @@ public class GameMainMenu extends JFrame implements ActionListener {
     JComboBox<String> dcb;
     JButton start;
     JButton back;
+
+    /**
+     * GameMainMenu konstruktora. Létrehozza és beállítja a framet és a rajta lévő komponenseket.
+     */
     public GameMainMenu() {
         setTitle("Game Main Menu");
         setPreferredSize(new Dimension(600, 400));
@@ -50,6 +54,10 @@ public class GameMainMenu extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Kezeli a különböző tevékenységeket az ablakon.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == back) {
