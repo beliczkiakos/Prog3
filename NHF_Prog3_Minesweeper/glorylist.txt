@@ -1,2 +1,3 @@
 AkosTeszt;77;Beginner
 AkosTimer;7;Beginner
+Akosfoteszt;104;Beginner
